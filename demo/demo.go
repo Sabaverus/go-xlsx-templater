@@ -1,12 +1,17 @@
 package main
 
 import (
-	"github.com/ivahaev/go-xlsx-templater"
+	"fmt"
+
+	xlst "github.com/Sabaverus/go-xlsx-templater"
 )
 
 func main() {
 	doc := xlst.New()
-	doc.ReadTemplate("./template.xlsx")
+	if err := doc.ReadTemplate("./template.xlsx"); err != nil {
+		fmt.Printf("Got error reading template: %v", err)
+		return
+	}
 	ctx := map[string]interface{}{
 		"name":           "Github User",
 		"nameHeader":     "Item name",
@@ -17,16 +22,40 @@ func main() {
 				"quantity": 2,
 			},
 			{
-				"name":     "Pencil",
+				"name":     "Pineapple",
 				"quantity": 1,
 			},
 			{
-				"name":     "Condom",
+				"name":     "Apple",
 				"quantity": 12,
 			},
 			{
-				"name":     "Beer",
+				"name":     "Pen",
 				"quantity": 24,
+			},
+		},
+		"iteratedItems": []map[string]interface{}{
+			{
+				"name": "Pen",
+				"moreItems": []map[string]interface{}{
+					{
+						"name": "Blue Pen",
+					},
+					{
+						"name": "Black Pen",
+					},
+				},
+			},
+			{
+				"name": "Pencil",
+				"moreItems": []map[string]interface{}{
+					{
+						"name": "Lead Pencil",
+					},
+					{
+						"name": "Mechanical Pencil",
+					},
+				},
 			},
 		},
 	}
